@@ -1,0 +1,7 @@
+{
+  "name": "short-url",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Junyong Lee(dyong) <likedyong@gmail.com>",
+  "license": "MIT"
+}
