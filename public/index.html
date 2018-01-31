@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+    </style>
+</head>
+
+<body>
+    <section id="urlShortener">
+        <label for="inpUrl">URL</label>
+        <input class="inp-url" type="url" id="inpUrl" placeholder="try https://google.com"/>
+        <button class="btn-shorten-it">Shorten it!</button>
+        <p class="txt-result"></p>
+    </section>
+
+    <script>
+        var urlShortener = document.getElementById('urlShortener');
+        var buttonShortenIt = urlShortener.getElementsByClassName('btn-shorten-it')[0];
+        var inputUrl = urlShortener.getElementsByClassName('inp-url')[0];
+        var textResult = urlShortener.getElementsByClassName('txt-result')[0];
+        buttonShortenIt.addEventListener('click', function (e) {
+            var url = inputUrl.value;
+            if (!url) {
+                alert('URL is required');
+                return;
+            }
+
+            var xhr = new XMLHttpRequest();
+            xhr.addEventListener('load', function () {
+                var response = this.responseText;
+                var url = response;
+
+                if (/^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/.test(url)) {
+                    textResult.innerHtml = '<a class="link-short-url" href="' + url + '"></a>';
+                } else {
+                    textResult.innerText = response;
+                }
+            });
+            // Make sure the hostname
+            xhr.open('GET', 'http://localhost:8080/api/shorten-url?url=' + encodeURI(url));
+            xhr.send();
+        });
+    </script>
+</body>
+
+</html>
