@@ -156,6 +156,7 @@ It renders a form page where user inputs urls and get their shortened ones.
 - What if visit history needs to be stored
 - What if a short url is shared with restricted people
 - What if a new feature needs to be tested for certain a user group
+- What if some different urls indicates the same
 
 ### Security
 
