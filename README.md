@@ -7,9 +7,9 @@ Web application shortens URL and redirects to the original URL when one shortene
 ## Requirements
 
 - It shortens a URL into a key with its maximum size of 8 characters
-- An original URL must have a corrsponding one shortened
+- An original URL must have a corresponding one shortened
 - It provides a web form where user inputs original URLs and gets their shortened ones
-- It redirects to the original URL when a shortened URL is requestsed
+- It redirects to the original URL when a shortened URL is requested
 - URL shortening algorithm must be implemented from the scratch
 
 ## System Design
@@ -145,7 +145,7 @@ It renders a form page where user inputs urls and get their shortened ones.
 - What if the URL storage is full
 - What if request rate is very high
 
-### Availabilty
+### Availability
 
 - What if the system needs to be restarted
 - What if the system is down
@@ -160,4 +160,4 @@ It renders a form page where user inputs urls and get their shortened ones.
 
 ### Security
 
-- What if some malcious requests are repeated
+- What if some malicious requests are repeated
