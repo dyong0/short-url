@@ -1,8 +1,8 @@
-# Short URL
+# Short URL [![Build Status](https://travis-ci.org/dyong0/short-url.svg?branch=master)](https://travis-ci.org/dyong0/short-url)
 
 Web application shortens URL and redirects to the original URL when one shortened is given. This application varies in several solutions.
 
-# Solution 1: The Simplest
+# Solution 1: The Simplest [![Build Status](https://travis-ci.org/dyong0/short-url.svg?branch=solution%2Fthe-simplest)](https://travis-ci.org/dyong0/short-url)
 
 ## Requirements
 
