@@ -5,7 +5,7 @@ const urlHash = require('./lib/urlHash')();
 const app = express();
 
 // Referred to https://stackoverflow.com/a/3809435/6280377
-const validateUrl = (url) => /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/.test(url);
+const validateUrl = (url) => /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)$/.test(url);
 
 // In order to restrict endpoints for static files
 app.get('/', (req, res) => {
