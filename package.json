@@ -6,6 +6,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node index.js",
+    "lint": "./node_modules/eslint/bin/eslint.js .",
     "test": "./node_modules/mocha/bin/mocha `find . -name '*.test.js' -not -path 'node_modules' -not -path '.git'`"
   },
   "dependencies": {
