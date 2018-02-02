@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const path = require('path');
 const urlHash = require('./lib/urlHash')();
 
@@ -7,13 +8,15 @@ const app = express();
 // Referred to https://stackoverflow.com/a/3809435/6280377
 const validateUrl = (url) => /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)$/.test(url);
 
+app.use(bodyParser.urlencoded({extended:  true}));
+
 // In order to restrict endpoints for static files
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-app.get('/api/shorten-url', (req, res) => {
-    const longUrl = req.query.url;
+app.post('/api/shorten-url', (req, res) => {
+    const longUrl = req.body.url;
 
     // Assume the url is url-encoded
     if (validateUrl(longUrl) === false) {
