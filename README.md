@@ -14,14 +14,12 @@ Web application shortens URL and redirects to the original URL when one shortene
 
 ## System Design
 
+### Functions
+
+- URL Shortening
+- Routing by short URL
+
 ### Architecture
-
-#### Functions
-
-- Shortening
-- Routing
-
-#### System Stack
 
 ```
 [URL shortener]
@@ -140,26 +138,28 @@ It renders a form page where user inputs urls and get their shortened ones.
 [      Display of the shortened url      ]
 ```
 
+
+
 ## Open Issues
 
 ### Performance
 
-- What if the URL storage is full
-- What if request rate is very high
+- Linear search for short URL creation doesn't make sense
 
 ### Availability
 
-- What if the system needs to be restarted
-- What if the system is down
+- Mapping between URL and key will be lost when restarted
+- Single point failure
 
 ### Usability
 
-- What if the original URL is not reachable
-- What if visit history needs to be stored
-- What if a short url is shared with restricted people
-- What if a new feature needs to be tested for certain a user group
-- What if some different urls indicates the same
+- URL key space is too small
+- No more URL can be registered, once URL key space is fully occupied
+- No analysis about usage of URLs
+- Original URL might not be reachable
+- No access control to certain URLs
+- Different URLs pointing a same origin can be registred differently
 
 ### Security
 
-- What if some malicious requests are repeated
+- Incremental hash is insecure
