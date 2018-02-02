@@ -33,11 +33,11 @@ app.post('/api/shorten-url', (req, res) => {
     }
 });
 
-app.get('/:shortUrl', (req, res) => {
-    const shortUrl = req.params.shortUrl;
+app.get('/:urlKey', (req, res) => {
+    const urlKey = req.params.urlKey;
 
     try {
-        const found = urlHash.getUrlByHash(shortUrl);
+        const found = urlHash.getUrlByHash(urlKey);
         if (found) {
             return res.redirect(found);
         }
