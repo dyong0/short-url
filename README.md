@@ -42,19 +42,21 @@ Hash lookup O(1)
 
 
 
-## GET /api/shorten-url?url
+## POST /api/shorten-url
 
 ### Overview
 
-Long URL -> Shorten URL -> Store the short URL -> Response with the shorten URL
+Long URL -> Shorten URL -> Store the short URL -> Response with the shorten URL (URL key)
 
 ### Request
 
-#### Route Parameters
+#### Request Body
+
+Content Type: application/x-www-form-urlencoded
 
 | Name | Validation                               | Default |
 | ---- | ---------------------------------------- | ------- |
-| url  | Valid URL-encoded URL, [refer to this page](http://urlregex.com/) | N/A     |
+| url  | Valid urlencoded URL, [refer to this page](http://urlregex.com/) | N/A     |
 
 ### Responses and Examples
 
@@ -82,7 +84,7 @@ Invalid URL
 
 
 
-## GET /:shortUrl
+## GET /:urlKey
 
 ### Overview
 
@@ -92,9 +94,9 @@ Shortened URL -> Find its original -> Response 302 Found redirection to the orig
 
 #### Query Parameters
 
-| Name     | Validation                          | Default |
-| -------- | ----------------------------------- | ------- |
-| shortUrl | Range of 0 to 99999999 *(< 2^32-1)* | N/A     |
+| Name   | Validation                          | Default |
+| ------ | ----------------------------------- | ------- |
+| urlKey | Range of 0 to 99999999 *(< 2^32-1)* | N/A     |
 
 Regarding redirection HTTP status code, [refer to this spec](https://www.greenbytes.de/tech/webdav/draft-ietf-httpbis-p2-semantics-26.html#rfc.section.6.4.p.2)
 
