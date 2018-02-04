@@ -1,5 +1,10 @@
 const request = require('supertest');
 const { expect } = require('chai');
+const redisMock = require('redis-mock');
+const redis = require('./redis');
+const redisClient = require('redis-mock').createClient();
+redis.setClient(redisClient);
+
 const app = require('./app');
 
 describe('POST /api/shorten-url', () => {
@@ -99,6 +104,25 @@ describe('POST /api/shorten-url', () => {
                 'url': 'invalid://protocol.google.com'
             })
             .expect(400);
+    });
+
+    it('responds same results on same urls', () => {
+        return Promise.all([
+            request(app)
+            .post('/api/shorten-url')
+            .set('Content-type', 'application/x-www-form-urlencoded')
+            .send({
+                'url': 'https://google.com'
+            }),
+            request(app)
+            .post('/api/shorten-url')
+            .set('Content-type', 'application/x-www-form-urlencoded')
+            .send({
+                'url': 'https://google.com'
+            })
+        ]).then((responses) => {
+            return expect(responses[0].text).to.equal(responses[1].text);
+        });
     });
 });
 
