@@ -8,6 +8,14 @@ redis.setClient(redisClient);
 const app = require('./app');
 
 describe('POST /api/shorten-url', () => {
+    beforeEach(() => {
+    });
+    afterEach((done) => {
+        redisClient.flushall(() => {
+            done();
+        });
+    });
+
     it('responds 200 on a url just with domain', () => {
         return request(app)
             .post('/api/shorten-url')
@@ -109,25 +117,82 @@ describe('POST /api/shorten-url', () => {
     it('responds same results on same urls', () => {
         return Promise.all([
             request(app)
-            .post('/api/shorten-url')
-            .set('Content-type', 'application/x-www-form-urlencoded')
-            .send({
-                'url': 'https://google.com'
-            }),
+                .post('/api/shorten-url')
+                .set('Content-type', 'application/x-www-form-urlencoded')
+                .send({
+                    'url': 'https://google.com'
+                }),
             request(app)
-            .post('/api/shorten-url')
-            .set('Content-type', 'application/x-www-form-urlencoded')
-            .send({
-                'url': 'https://google.com'
-            })
+                .post('/api/shorten-url')
+                .set('Content-type', 'application/x-www-form-urlencoded')
+                .send({
+                    'url': 'https://google.com'
+                })
         ]).then((responses) => {
             return expect(responses[0].text).to.equal(responses[1].text);
         });
     });
 });
 
+describe('GET /api/url/:urlKey', () => {
+    beforeEach(() => {
+    });
+    afterEach((done) => {
+        redisClient.flushall(() => {
+            done();
+        });
+    });
+
+    it('responds URL information and its usages', () => {
+        return request(app)
+            .post('/api/shorten-url')
+            .set('Content-type', 'application/x-www-form-urlencoded')
+            .send({
+                'url': 'https://google.com'
+            }).then((res) => {
+                const key = res.text;
+
+                return Promise.all([
+                    request(app)
+                        .get(`/${key}`)
+                        .set('Referer', 'https://who.am.i')
+                        .set('User-Agent', 'Super device'),
+                    request(app)
+                        .get(`/${key}`)
+                        .set('Referer', 'https://who.am.i2')
+                        .set('User-Agent', 'Super device2')
+                ]).then(() => {
+                    return key;
+                });
+            }).then((key) => {
+                return request(app)
+                    .get(`/api/urls/${key}`)
+                    .expect(200)
+                    .then((res) => {
+                        expect(res.body).to.deep.equal({
+                            url: 'https://google.com',
+                            key: key,
+                            usages: {
+                                clicks: 2,
+                                userAgents: ['Super device', 'Super device2'],
+                                referrers: ['https://who.am.i', 'https://who.am.i2']
+                            }
+                        });
+                    });
+            });
+    });
+});
+
 
 describe('GET /:shortUrl', () => {
+    beforeEach(() => {
+    });
+    afterEach((done) => {
+        redisClient.flushall(() => {
+            done();
+        });
+    });
+
     it('responds 404 for not registered url', () => {
         return request(app)
             .get('/unregisteredUrl')
