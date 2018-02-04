@@ -2,6 +2,11 @@
 
 Web application shortens URL and redirects to the original URL when one shortened is given. This application varies in several solutions.
 
+# How to Use
+
+1. Run docker-compose up or docker-compose.exe up for Windows
+2. Visit http://localhost:8080
+
 # Solution 1: The Simplest [![Build Status](https://travis-ci.org/dyong0/short-url.svg?branch=solution%2Fthe-simplest)](https://travis-ci.org/dyong0/short-url)
 
 ## Requirements
@@ -163,8 +168,6 @@ It renders a form page where user inputs urls and get their shortened ones.
 ### Security
 
 - Incremental hash is insecure
-
-
 
 # Solution 2: Presentable [![Build Status](https://travis-ci.org/dyong0/short-url.svg?branch=solution%2Fpresentable)](https://travis-ci.org/dyong0/short-url)
 
