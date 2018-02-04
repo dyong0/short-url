@@ -1,8 +1,14 @@
 const app = require('./app');
 const config = require('./config');
+const redis = require('./redis');
 
-const port = config.app.port;
-
-app.listen(port, () => {
-    console.log(`Server is listening ${port}`);
+redis.createClient({
+    host: config.redis.host,
+    port: config.redis.port,
+    password: config.redis.password
+}).on('connect', () => {
+    const port = config.app.port;
+    app.listen(config.app.port, () => {
+        console.log(`Server is listening ${port}`);
+    });
 });
