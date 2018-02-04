@@ -214,20 +214,13 @@ random bytes = generate random 1 to 7 bytes
 
 hash = base58_encode (random bytes)
 
-while hash exists in persistence
-    if url for hash in persistence is same as given url
-    	return hash
-    
-	hash = next hash value
-done
-
 store (hash, url) in hash to url
 store (base58_encode of url, hash) in url to hash
 
 return hash
 ```
 
-It also expands the url space to 58^8 from 10^8.
+It also expands the URL space to 58^8 from 10^8.
 
 ## Persistence
 
@@ -238,19 +231,19 @@ Redis will be used as it features:
 
 ### Data Structure
 
-```
-String short_url:url_to_hash:<url>
-String short_url:url:<hash>
-String short_url:url_usages:clicks:<hash>
-Set    short_url:url_usages:referrers:<hash>
-Set    short_url:url_usages:user_agents:<hash>
-```
+| Name        | Type                 | Key                                      | Note                            |
+| ----------- | -------------------- | ---------------------------------------- | ------------------------------- |
+| URL         | String               | `short_url:url:<hash>`                   | URL is stored as base64 encoded |
+| Hash        | String               | `short_url:hash:<url>`                   | Key URL is base64 encoded       |
+| Clicks      | Incremental (String) | `short_url:url_usages:clicks:<hash>`     | For usage analysis              |
+| Referrers   | Set                  | `short_url:url_usages:referrers:<hash>`  | For usage analysis              |
+| User Agents | Set                  | `short_url:url_usages:user_agents:<hash>` | For usage analysis              |
 
-They have different rates for the opertions (create, read, update, delete). So they need to be separated.
+They have different rates for the operations(create, read, update, delete). So they need to be separated.
 
 ### Data Expiration
 
-Data expires in 1 day. Once expired, the data will be entirely removed.
+Data expires in 1 day. Once expired, the data will be entirely removed. But every update to the data resets  expiration.
 
 *URL usages will be kept in other persistence, but later. It'll be listed in the open issues.*
 
