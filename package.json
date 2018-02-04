@@ -10,8 +10,10 @@
     "test": "./node_modules/mocha/bin/mocha --exit `find . -name '*.test.js' -not -path './node_modules/*' -not -path '.git/*'`"
   },
   "dependencies": {
+    "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
-    "express": "4.16.*"
+    "express": "4.16.*",
+    "extend-error": "^0.0.2"
   },
   "devDependencies": {
     "chai": "4.1.*",
