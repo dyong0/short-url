@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node index.js",
     "lint": "./node_modules/eslint/bin/eslint.js .",
-    "test": "./node_modules/mocha/bin/mocha `find . -name '*.test.js' -not -path 'node_modules' -not -path '.git'`"
+    "test": "./node_modules/mocha/bin/mocha --exit `find . -name '*.test.js' -not -path 'node_modules' -not -path '.git'`"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
