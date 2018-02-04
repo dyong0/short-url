@@ -2,23 +2,36 @@
 <html lang="en">
 
 <head>
+    <title>Short URL</title>
+
     <style>
     </style>
 </head>
 
 <body>
     <section id="urlShortener">
+        <h2>Shorten URL</h2>
         <label for="inpUrl">URL</label>
-        <input class="inp-url" type="url" id="inpUrl" placeholder="try https://google.com"/>
+        <input class="inp-url" type="url" id="inpUrl" placeholder="try https://google.com" />
         <button class="btn-shorten-it">Shorten it!</button>
         <p class="txt-result"></p>
+
+        <h2>Details for <span class="url-key"></span></h2>
+        <p class="details"></p>
     </section>
 
     <script>
+        var domain = location.protocol + '//' + location.hostname + ':' + location.port;
+
         var urlShortener = document.getElementById('urlShortener');
         var buttonShortenIt = urlShortener.getElementsByClassName('btn-shorten-it')[0];
         var inputUrl = urlShortener.getElementsByClassName('inp-url')[0];
         var textResult = urlShortener.getElementsByClassName('txt-result')[0];
+        var urlKeyInDetails = urlShortener.getElementsByClassName('url-key')[0];
+        var details = urlShortener.getElementsByClassName('details')[0];
+
+        var urlKey = '';
+
         buttonShortenIt.addEventListener('click', function (e) {
             var url = inputUrl.value;
             if (!url) {
@@ -28,19 +41,38 @@
 
             var xhr = new XMLHttpRequest();
             xhr.addEventListener('load', function () {
-                var response = this.responseText;
-                var url = response;
+                urlKey = '';
 
-                if (/^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/.test(url)) {
-                    textResult.innerHtml = '<a class="link-short-url" href="' + url + '"></a>';
-                } else {
-                    textResult.innerText = response;
+                if (this.status !== 200) {
+                    textResult.innerText = this.response;
                 }
+
+                urlKey = this.response;
+
+                var url = domain + '/' + urlKey;
+                textResult.innerHTML = '<a class="link-short-url" target="_blank" href="' + url + '">Shortened URL: ' + url + '</a>';
+
+                urlKeyInDetails.innerText = urlKey;
             });
             // Make sure the hostname
-            xhr.open('GET', 'http://localhost:8080/api/shorten-url?url=' + encodeURI(url));
-            xhr.send();
+            xhr.open('POST', domain + '/api/shorten-url');
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.send('url=' + encodeURI(url));
         });
+
+        setInterval(function () {
+            if(!urlKey) {
+                return;
+            }
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.addEventListener('load', function() {
+                details.innerHTML = '<code>'+this.response+'</code>'
+            });
+            xhr.open('GET', domain + '/api/urls/' + urlKey);
+            xhr.send();
+        }, 500);
     </script>
 </body>
 
